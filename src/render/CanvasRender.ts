@@ -1,0 +1,157 @@
+import {
+    CurveLineLayout,
+    GMLRender,
+    GraphLineType,
+    GraphicLanguageParser,
+    ILineLayout,
+    LineLayout,
+    PolyLineLayout,
+    TransformMatrix,
+    GraphicNode,
+    GraphLinkLine,
+    IGraphicLine,
+    SimpleLine, PolyLine, CurveLine,
+    GMLData, Point
+} from "dahongpao-core";
+import {CanvasSimpleLine} from "@/graphics/line/CanvasSimpleLine";
+import {CanvasPolyLine} from "@/graphics/line/CanvasPolyLine";
+import {CanvasCurveLine} from "@/graphics/line/CanvasCurveLine";
+import {CanvasGraphicNode} from "@/graphics/CanvasGraphicNode";
+
+/**
+ * 主管渲染的GMLApp
+ */
+export class CanvasRender implements GMLRender {
+    parser: GraphicLanguageParser;
+
+    layoutMap: Map<GraphLineType, ILineLayout>;
+
+    globalTransform: TransformMatrix = new TransformMatrix();
+    canvas:HTMLCanvasElement|null=null;
+
+    constructor() {
+        this.parser = new GraphicLanguageParser();
+        this.layoutMap = new Map<GraphLineType, ILineLayout>();
+        this.layoutMap.set(GraphLineType.Line, new LineLayout());
+        this.layoutMap.set(GraphLineType.PolyLine, new PolyLineLayout());
+        this.layoutMap.set(GraphLineType.Curve, new CurveLineLayout());
+        this.globalTransform.a = window.devicePixelRatio;
+        this.globalTransform.d = window.devicePixelRatio;
+    }
+
+    init(element: HTMLCanvasElement) {
+        this.canvas=element;
+    }
+
+    reset() {
+        if(!this.canvas){
+            console.error("Error! The canvas is null!");
+            return;
+        }
+        const ctx = this.canvas.getContext("2d")!;
+        ctx!.reset();
+        const {a, b, c, d, e, f} = this.globalTransform;
+        ctx.transform(a, b, c, d, e, f);
+    }
+
+    layoutLine(nodeMap:Map<string,GraphicNode>, linkLine:GraphLinkLine):IGraphicLine|null{
+        const layout = this.layoutMap.get(linkLine.type);
+        if (!layout) {
+            return null;
+        }
+        const line = layout.layout(nodeMap, linkLine);
+        if (!line) {
+            return null;
+        }
+        const ctx=this.canvas!.getContext("2d");
+        if (line instanceof SimpleLine) {
+            return CanvasSimpleLine.copyFrom(line,ctx!);
+        } else if (line instanceof PolyLine) {
+            return CanvasPolyLine.copyFrom(line,ctx!);
+        }else if (line instanceof CurveLine) {
+            return CanvasCurveLine.copyFrom(line,ctx!);
+        }
+        return null;
+    }
+
+    parse2GMLData(text: string): GMLData {
+        this.parser.parseString(text);
+        const ctx=this.canvas!.getContext("2d");
+
+        const nodeMap=this.parser.listener.nodeMap;
+        const linkMap=this.parser.listener.linkMap;
+        const lineMap=new Map<string,IGraphicLine>();
+        const renderNodeMap=new Map<string,GraphicNode>();
+        for (const [_, node] of nodeMap) {
+            const renderNode = CanvasGraphicNode.copyFrom(node,ctx!);
+            renderNodeMap.set(renderNode.id,renderNode);
+        }
+        for (const [_, linkLine] of linkMap) {
+            const renderLine=this.layoutLine(nodeMap,linkLine);
+            if(renderLine){
+                lineMap.set(renderLine.id,renderLine);
+            }
+        }
+        return {
+            nodeMap:renderNodeMap,
+            linkMap,
+            lineMap,
+        }
+    }
+
+    draw(text: string) {
+        this.reset();
+
+        const ctx=this.canvas!.getContext("2d");
+        this.parser.parseString(text);
+        const nodeMap = this.parser.listener.nodeMap;
+        const linkMap = this.parser.listener.linkMap;
+        for (const [_, node] of nodeMap) {
+            const renderNode = CanvasGraphicNode.copyFrom(node,ctx!);
+            renderNode.draw();
+        }
+        for (const [_, linkLine] of linkMap) {
+            const renderLine=this.layoutLine(nodeMap,linkLine);
+            if(renderLine){
+                renderLine.draw();
+            }
+        }
+    }
+
+    drawData(nodeMap: Map<string, GraphicNode>, lineMap: Map<string, IGraphicLine>) {
+        this.reset();
+        for (const [_, node] of nodeMap) {
+            node.draw();
+        }
+        for (const [_, node] of lineMap) {
+            node.draw();
+        }
+    }
+
+    scale(sx:number,sy:number):void{
+        this.globalTransform.a*=sx;
+        this.globalTransform.d*=sy;
+    }
+
+    translation(dx:number,dy:number):void{
+        this.globalTransform.e+=dx;
+        this.globalTransform.f+=dy;
+    }
+
+    resetTransform():void{
+        this.globalTransform=new TransformMatrix();
+        this.globalTransform.a = window.devicePixelRatio;
+        this.globalTransform.d = window.devicePixelRatio;
+    }
+
+
+    transfromToGlobal(point:Point):Point{
+        point.x = point.x * window.devicePixelRatio;
+        point.y = point.y * window.devicePixelRatio;
+        const {a, d, e, f} = this.globalTransform;
+        point.x = point.x / a - e / a;
+        point.y = point.y / d - f / d;
+        return point;
+    }
+
+}

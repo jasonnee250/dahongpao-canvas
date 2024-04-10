@@ -1,0 +1,18 @@
+.left-zone {
+    width: auto;
+    height: 100%;
+    background: #bcbcbc;
+    padding-bottom: 10px;
+
+    .edit-zone{
+        max-width: 700px;
+        min-width: 300px;
+        height: 100%;
+        margin-right: 10px;
+        margin-left: 10px;
+        resize: horizontal;
+        background: #bbbbbb;
+        color: #000000;
+        font-size: 14px;
+    }
+}
