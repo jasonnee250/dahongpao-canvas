@@ -1,4 +1,4 @@
-import {IProcessor} from "@/interact/processor/IProcessor";
+import {IProcessor} from "@/interact/basic/IProcessor";
 import {DetectorEnum, AbsDetector} from "@/interact/detector/AbsDetector.ts";
 
 export interface IConfig{

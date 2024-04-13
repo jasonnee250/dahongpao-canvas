@@ -1,4 +1,4 @@
-import {NodeManager} from "@/render/NodeManager";
+import {NodeManager} from "@/app/NodeManager.ts";
 import {GMLRender} from "dahongpao-core";
 import {DetectorEnum, AbsDetector} from "@/interact/detector/AbsDetector.ts";
 

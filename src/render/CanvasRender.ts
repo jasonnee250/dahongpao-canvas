@@ -6,12 +6,11 @@ import {
     ILineLayout,
     LineLayout,
     PolyLineLayout,
-    TransformMatrix,
     GraphicNode,
     GraphLinkLine,
     IGraphicLine,
     SimpleLine, PolyLine, CurveLine,
-    GMLData, Point, RectNode
+    GMLData, Point, RectNode, AffineMatrix
 } from "dahongpao-core";
 import {CanvasSimpleLine} from "@/graphics/line/CanvasSimpleLine";
 import {CanvasPolyLine} from "@/graphics/line/CanvasPolyLine";
@@ -26,7 +25,7 @@ export class CanvasRender implements GMLRender {
 
     layoutMap: Map<GraphLineType, ILineLayout>;
 
-    globalTransform: TransformMatrix = new TransformMatrix();
+    globalTransform: AffineMatrix = AffineMatrix.generateMatrix();
     canvas:HTMLCanvasElement|null=null;
 
     constructor() {
@@ -139,7 +138,7 @@ export class CanvasRender implements GMLRender {
     }
 
     resetTransform():void{
-        this.globalTransform=new TransformMatrix();
+        this.globalTransform=AffineMatrix.generateMatrix();
         this.globalTransform.a = window.devicePixelRatio;
         this.globalTransform.d = window.devicePixelRatio;
     }
