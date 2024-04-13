@@ -1,12 +1,12 @@
-import React,{useEffect} from 'react'
+import {useEffect} from 'react'
 import {FPSTip} from "@/component/fps/FPSTip";
 import {SimpleEditZone} from "@/component/editZone/SimpleEditZone";
 import {ButtonGroup, ButtonProp} from "@/component/buttonGroup";
 import {DHPCanvas} from "@/component/canvas/DHPCanvas";
-import {Application} from "@/app/Application";
 import './App.css'
+import {ExampleApp} from "@/example/ExampleApp.ts";
 function App() {
-  const mainApp=new Application();
+  const mainApp=new ExampleApp();
 
   useEffect(() => {
     mainApp.start();
@@ -19,22 +19,22 @@ function App() {
   const parse=()=>{
     const htmlDom=document.getElementsByClassName("edit-zone");
     const editZone=htmlDom[0] as HTMLTextAreaElement;
-    mainApp.parse(editZone.value);
+    mainApp.application.parse(editZone.value);
   }
 
   const zoomIn=()=>{
-    mainApp.gmlRender.scale(1.1,1.1);
-    mainApp.redraw();
+    mainApp.application.gmlRender.scale(1.1,1.1);
+    mainApp.application.redraw();
   }
 
   const zoomOut=()=>{
-    mainApp.gmlRender.scale(1/1.1,1/1.1);
-    mainApp.redraw();
+    mainApp.application.gmlRender.scale(1/1.1,1/1.1);
+    mainApp.application.redraw();
   }
 
   const reset=()=>{
-    mainApp.gmlRender.resetTransform();
-    mainApp.redraw();
+    mainApp.application.gmlRender.resetTransform();
+    mainApp.application.redraw();
   }
   const buttons:ButtonProp[]=[];
   buttons.push({click:parse,buttonName:"Draw"});
@@ -50,7 +50,7 @@ function App() {
             <ButtonGroup buttons={buttons}/>
             <SimpleEditZone/>
           </div>
-          <DHPCanvas gmlRender={mainApp.gmlRender}/>
+          <DHPCanvas gmlRender={mainApp.application.gmlRender}/>
         </div>
         <FPSTip/>
       </>

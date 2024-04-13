@@ -64,7 +64,7 @@ export class CanvasCurveLine extends CurveLine {
         }
     }
 
-    getTreeNode(): RectNode {
+    getRectNode(): RectNode {
         const points=[...this.points];
         //左箭头
         if(this.lArrow===LineArrowType.Arrow){

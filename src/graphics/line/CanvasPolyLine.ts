@@ -63,9 +63,9 @@ export class CanvasPolyLine extends PolyLine {
         }
     }
 
-    getTreeNode(): RectNode {
+    getRectNode(): RectNode {
         const boundsList:RectNode[]=[];
-        const bounds = super.getTreeNode();
+        const bounds = super.getRectNode();
         boundsList.push(bounds);
         //左箭头
         if(this.lArrow===LineArrowType.Arrow){

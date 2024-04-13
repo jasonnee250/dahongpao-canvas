@@ -47,7 +47,7 @@ export class CanvasSimpleLine extends SimpleLine {
         }
     }
 
-    getTreeNode(): RectNode {
+    getRectNode(): RectNode {
         const points=[this.start,this.end];
         //左箭头
         if(this.lArrow===LineArrowType.Arrow){

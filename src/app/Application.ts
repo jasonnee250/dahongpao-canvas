@@ -1,6 +1,6 @@
 import {GMLRender, IApplication, IPlugin} from "dahongpao-core";
 import {CanvasRender} from "@/render/CanvasRender";
-import {NodeManager} from "@/app/NodeManager";
+import {NodeManager} from "@/render/NodeManager";
 
 export class Application implements IApplication{
 
@@ -39,5 +39,9 @@ export class Application implements IApplication{
 
     redraw():void{
         this.gmlRender.drawData(this.nodeManager.nodeMap, this.nodeManager.lineMap);
+    }
+
+    registerPlugin(plugin:IPlugin){
+        this.plugins.push(plugin);
     }
 }

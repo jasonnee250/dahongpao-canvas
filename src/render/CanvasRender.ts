@@ -11,7 +11,7 @@ import {
     GraphLinkLine,
     IGraphicLine,
     SimpleLine, PolyLine, CurveLine,
-    GMLData, Point
+    GMLData, Point, RectNode
 } from "dahongpao-core";
 import {CanvasSimpleLine} from "@/graphics/line/CanvasSimpleLine";
 import {CanvasPolyLine} from "@/graphics/line/CanvasPolyLine";
@@ -145,13 +145,49 @@ export class CanvasRender implements GMLRender {
     }
 
 
-    transfromToGlobal(point:Point):Point{
+    transformToGlobal(point:Point):Point{
         point.x = point.x * window.devicePixelRatio;
         point.y = point.y * window.devicePixelRatio;
         const {a, d, e, f} = this.globalTransform;
         point.x = point.x / a - e / a;
         point.y = point.y / d - f / d;
         return point;
+    }
+
+    dirtyDraw(bounds: RectNode,graphicList:GraphicNode[]){
+        const ctx = this.canvas!.getContext("2d")!;
+        //清空；
+        ctx.clearRect(bounds.minX, bounds.minY, bounds.maxX - bounds.minX, bounds.maxY - bounds.minY);
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(bounds.minX, bounds.minY, bounds.maxX - bounds.minX, bounds.maxY - bounds.minY);
+        ctx.clip();
+        for (const graphic of graphicList) {
+            graphic.draw();
+        }
+        ctx.restore();
+    }
+
+    getViewPortBounds(){
+        const rect = this.canvas!.getBoundingClientRect();
+        const point = new Point(rect.width,rect.height);
+        const start = this.transformToGlobal(new Point(0, 0));
+        const globalPoint = this.transformToGlobal(point);
+        const buffer=2;
+        const rectBounds: RectNode = {
+            id: 'rect',
+            minX: start.x-buffer,
+            minY: start.y-buffer,
+            maxX: globalPoint.x+2*buffer,
+            maxY: globalPoint.y+2*buffer,
+        }
+        return rectBounds;
+    }
+
+    getGlobalPoint(event: PointerEvent): Point {
+        const rect = this.canvas!.getBoundingClientRect()!;
+        const point = new Point(event.clientX - rect.x, event.clientY - rect.y);
+        return this.transformToGlobal(point);
     }
 
 }

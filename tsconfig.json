@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "dom", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "declaration": true,
@@ -29,7 +29,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/index.ts"
+    "src/App.tsx"
   ],
   "exclude": ["node_modules"],
 }

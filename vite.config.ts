@@ -14,8 +14,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
-      name: 'dahongpao',
-      fileName: 'dahongpao',
+      name: 'dahongpao-canvas',
+      fileName: 'dahongpao-canvas',
     },
     rollupOptions: {
       external: ['react'],
