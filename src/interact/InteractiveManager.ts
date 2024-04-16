@@ -52,9 +52,10 @@ export class InteractiveManager {
         const point = new Point(event.clientX - rect.x, event.clientY - rect.y);
         const globalPoint= ctx.gmlRender.transformToGlobal(point);
         return {
-            clientPoint:point,
+            clientPoint:new Point(event.clientX,event.clientY),
             globalPoint:globalPoint,
             type:event.type,
+            originEvent:event,
         }
     }
 

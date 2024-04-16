@@ -1,9 +1,14 @@
 {
   "name": "dahongpao-canvas",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.1-fix-5",
+  "main": "dist/dahongpao-canvas.umd.cjs",
+  "module": "dist/dahongpao-canvas.js",
   "type": "module",
-  "types": "src/index.d.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "vite",
     "prepare": "husky install",

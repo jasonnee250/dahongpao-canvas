@@ -40,6 +40,9 @@ export class CanvasRender implements GMLRender {
 
     init(element: HTMLCanvasElement) {
         this.canvas=element;
+        const ctx = this.canvas.getContext("2d")!;
+        const {a, b, c, d, e, f} = this.globalTransform;
+        ctx.transform(a, b, c, d, e, f);
     }
 
     reset() {
