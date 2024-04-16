@@ -52,6 +52,16 @@ export class NodeManager extends AbsNodeManager{
         return nodeList;
     }
 
+    addNode(node:GraphicNode){
+        this.nodeMap.set(node.id,node);
+        this.addIndexNode(node.getRectNode());
+    }
+
+    removeNode(node:GraphicNode){
+        this.nodeMap.delete(node.id);
+        this.removeIndexNode(node.getRectNode());
+    }
+
     removeIndexNode(node:RectNode){
         this.tree.remove(node, (a: RectNode, b: RectNode) => {
             return a.id === b.id;

@@ -44,9 +44,8 @@ export class InteractiveUtils {
         }
     }
 
-    static bufferBounds(bounds: RectNode, ctx: EventContext): void {
+    static bufferBounds(bounds: RectNode, ctx: EventContext,buffer:number=2): void {
         const scale = ctx.gmlRender.globalTransform.a / 2;
-        const buffer = 2;
         bounds.minX = Math.round((bounds.minX) * scale - buffer) / scale;
         bounds.minY = Math.round((bounds.minY) * scale - buffer) / scale;
         bounds.maxX = Math.round((bounds.maxX) * scale + 2 * buffer) / scale;

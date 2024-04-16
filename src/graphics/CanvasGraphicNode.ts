@@ -1,4 +1,4 @@
-import {GraphicNode, GraphicNodeType, GraphicUtils, RectNode} from 'dahongpao-core'
+import {GraphicNode, GraphicNodeType, GraphicUtils, RectNode,TextAlignType} from 'dahongpao-core'
 import ellipseDraw from "@/graphics/nodeDrawer/EllipseDrawer.ts";
 import diamondDraw from "@/graphics/nodeDrawer/DiamondDrawer.ts";
 import parallelogramDraw from "@/graphics/nodeDrawer/ParallelogramDrawer.ts";
@@ -18,6 +18,13 @@ export class CanvasGraphicNode extends GraphicNode {
             graphNode[key] = node[key];
         }
         return graphNode;
+    }
+
+    static generateText(id:string,ctx: CanvasRenderingContext2D){
+        const text=new CanvasGraphicNode(id, ctx);
+        text.type=GraphicNodeType.Text;
+        text.horizonAlign=TextAlignType.TOP_OR_LEFT;
+        text.verticalAlign=TextAlignType.TOP_OR_LEFT;
     }
 
     constructor(id: string, ctx: CanvasRenderingContext2D) {
@@ -42,6 +49,8 @@ export class CanvasGraphicNode extends GraphicNode {
             case GraphicNodeType.Triangle:
                 trianglDeraw(this, this.graphicContext);
                 break;
+            case GraphicNodeType.Text:
+                break;
             case GraphicNodeType.Rect:
             default:
                 rectDraw(this, this.graphicContext);
@@ -54,28 +63,75 @@ export class CanvasGraphicNode extends GraphicNode {
         ctx.fillStyle = textFill === '#0' ? '#000000' : textFill;
         ctx.globalAlpha = 1;
         ctx.font = this.fontSize.toString() + 'px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.text, this.x + 0.5 * this.w, this.y + 0.5 * this.h);
+        const textBounds=this.getTextBounds();
+        const textList=this.text.split('\n');
+        const x=textBounds.minX;
+        let y=textBounds.minY;
+        const delta=4;
+        for(const text of textList){
+            ctx.fillText(text, x, y);
+            const result = this.graphicContext.measureText(text);
+            const height = result.actualBoundingBoxAscent + result.actualBoundingBoxDescent;
+            y=y+height+delta;
+        }
     }
 
-    getTreeNode(): RectNode {
+    getRectNode(): RectNode {
         const bounds: RectNode = super.getRectNode();
         if (this.text === "") {
             return bounds;
         }
-        this.graphicContext.font = this.fontSize.toString() + 'px Arial';
-        const result = this.graphicContext.measureText(this.text);
-        const width = result.width;
-        const height = result.actualBoundingBoxAscent + result.actualBoundingBoxDescent;
-        const center = GraphicUtils.centerPoint(this);
-        const treeBounds: RectNode = {
-            id:"text",
-            minX: center.x - 0.5 * width,
-            maxX: center.x + 0.5 * width,
-            minY: center.y - 0.5 * height,
-            maxY: center.y + 0.5 * height,
-        }
+        const treeBounds: RectNode = this.getTextBounds();
         return GraphicUtils.getBounds([bounds,treeBounds],this.id);
+    }
+
+    getTextBounds():RectNode{
+        this.graphicContext.font = this.fontSize.toString() + 'px Arial';
+        const textList=this.text.split('\n');
+        let sumH=0;
+        let sumW=0;
+        const delta=4;
+        for(const text of textList){
+            const result = this.graphicContext.measureText(text);
+            const width = result.width;
+            const height = result.actualBoundingBoxAscent + result.actualBoundingBoxDescent;
+            sumH=sumH+height+delta;
+            sumW=width>sumW?width:sumW;
+        }
+        sumH+=20;
+        //计算x
+        let x=this.x;
+        let y=this.y;
+        switch (this.horizonAlign){
+            case TextAlignType.TOP_OR_LEFT:
+                break;
+            case TextAlignType.BOTTOM_OR_RIGHT:
+                x=this.x+this.w-sumW;
+                break;
+            case TextAlignType.CENTER:
+            default:
+                x=this.x+0.5*this.w-0.5*sumW;
+                break;
+        }
+        switch (this.verticalAlign){
+            case TextAlignType.TOP_OR_LEFT:
+                break;
+            case TextAlignType.BOTTOM_OR_RIGHT:
+                y=this.y+this.h-sumH;
+                break;
+            case TextAlignType.CENTER:
+            default:
+
+                y=this.y+0.5*this.h-0.5*sumH;
+                break;
+        }
+        return {
+            id:"text-bounds",
+            minX:x,
+            minY:y,
+            maxX:x+sumW,
+            maxY:y+sumH,
+        }
+
     }
 }
