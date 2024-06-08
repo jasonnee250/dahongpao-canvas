@@ -192,4 +192,8 @@ export class CanvasRender implements GMLRender {
         return this.transformToGlobal(point);
     }
 
+    getScale():number{
+        return this.globalTransform.a;
+    }
+
 }

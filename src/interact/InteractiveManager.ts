@@ -1,50 +1,51 @@
-import {IProcessor} from "./basic/IProcessor";
 import {EventContext} from "@/plugins/EventContext";
 import {IConfig} from "./config/IConfig.ts";
-import {InteractiveEvent} from "./basic/InteractiveEvent.ts";
+import {InteractiveEvent, InteractiveEventType} from "./basic/InteractiveEvent.ts";
 import {Point} from "dahongpao-core";
+import {AbsMainMode} from "@/interact/basic/MainMode.ts";
 
 export class InteractiveManager {
 
-    processors:IProcessor[]=[];
-    currentProcessor:IProcessor|null=null;
+    modes:AbsMainMode[]=[];
+    currentMode:AbsMainMode;
 
     constructor(config:IConfig) {
-        this.processors=config.processors;
+        this.modes=config.modes;
+        this.currentMode=config.modes[config.modes.length-1];
     }
 
+    /** 当前模式执行之后判断要不要退出该模式 */
     onEvent(event:PointerEvent,ctx:EventContext):void{
         //reset
         this._reset(ctx);
         const interactiveEvent=this._convertInteractiveEvent(event,ctx);
-        //选择
-        if(!this.currentProcessor){
-            this.currentProcessor=this.selectProcessor(interactiveEvent,ctx);
-        }
-        if(!this.currentProcessor){
-            return;
-        }
-        //执行
-        this.currentProcessor.process(interactiveEvent,ctx);
-        //执行后判断
-        if(this.currentProcessor.canBeExit(interactiveEvent,ctx)){
-            this.currentProcessor=null;
-        }
+        this.detect(interactiveEvent,ctx);
+        this.currentMode.work(interactiveEvent,ctx);
+        this._record(interactiveEvent,ctx);
     }
 
-    selectProcessor(event:InteractiveEvent,ctx:EventContext):IProcessor|null{
-        for(const processor of this.processors){
-            if(processor.canBeEnable(event,ctx)){
-                return processor;
+    detect(event:InteractiveEvent,ctx:EventContext):void{
+        /** 当前子模式不能退出，仍在当前子模式下执行事件 */
+        if(!this.currentMode.canBeExit(event,ctx)){
+            return;
+        }
+        /** 当前子模式能退出，重新寻找能够执行的子模式 */
+        for(const mode of this.modes){
+            if(mode.canBeEnable(event,ctx)){
+                this.currentMode=mode;
+                return;
             }
         }
-        return null;
     }
 
     private _reset(ctx:EventContext){
         for(const [_type,detector] of ctx.detectors){
             detector.reset();
         }
+    }
+
+    private _record(event:InteractiveEvent,ctx:EventContext):void{
+        ctx.lastInteractiveEvent=event;
     }
 
     private _convertInteractiveEvent(event:PointerEvent,ctx:EventContext):InteractiveEvent{
@@ -54,9 +55,22 @@ export class InteractiveManager {
         return {
             clientPoint:new Point(event.clientX,event.clientY),
             globalPoint:globalPoint,
-            type:event.type,
+            type:this._convertEventType(event.type),
             originEvent:event,
         }
+    }
+
+    private _convertEventType(type:string):InteractiveEventType{
+        if(type==="pointerdown"){
+            return InteractiveEventType.pointerDown;
+        }
+        if(type==="pointermove"){
+            return InteractiveEventType.pointermove;
+        }
+        if(type==="pointerup"){
+            return InteractiveEventType.pointerup;
+        }
+        return InteractiveEventType.unknown;
     }
 
 }

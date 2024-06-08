@@ -13,6 +13,8 @@ export class CanvasGraphicNode extends GraphicNode {
     graphicContext: CanvasRenderingContext2D;
     textInfo: TextInfo=new TextInfo();
 
+    parent:GraphicNode|null=null;
+
     static copyFrom(node: GraphicNode, ctx: CanvasRenderingContext2D): CanvasGraphicNode {
         const graphNode = new CanvasGraphicNode(node.id, ctx);
         const keys = Object.keys(node);
