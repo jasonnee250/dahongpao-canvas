@@ -1,5 +1,5 @@
-import {InteractiveEvent} from "src/interact/basic/InteractiveEvent";
-import {EventContext} from "src/plugins";
+import {InteractiveEvent} from "@/interact/basic/InteractiveEvent";
+import {EventContext} from "@/plugins";
 
 export abstract class ClickHandler{
 

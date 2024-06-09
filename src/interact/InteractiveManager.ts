@@ -55,13 +55,17 @@ export class InteractiveManager {
         return {
             clientPoint:new Point(event.clientX,event.clientY),
             globalPoint:globalPoint,
-            type:this._convertEventType(event.type),
+            type:this._convertEventType(event,ctx),
             originEvent:event,
         }
     }
 
-    private _convertEventType(type:string):InteractiveEventType{
+    private _convertEventType(event:PointerEvent,ctx:EventContext):InteractiveEventType{
+        const type=event.type;
         if(type==="pointerdown"){
+            if(event.target!=ctx.gmlRender.canvas){
+                return InteractiveEventType.pointerDownOutside;
+            }
             return InteractiveEventType.pointerDown;
         }
         if(type==="pointermove"){

@@ -1,4 +1,4 @@
-import {BaseText} from "src/graphics/text/BaseText";
+import {BaseText} from "@/graphics/text/BaseText";
 
 export class TextInfo {
     baseTextList: BaseText[]=[];

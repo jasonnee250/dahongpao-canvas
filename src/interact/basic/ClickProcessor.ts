@@ -1,7 +1,7 @@
 import {EventContext} from "@/plugins";
-import {IProcessor} from "src/interact/basic/IProcessor";
+import {IProcessor} from "@/interact/basic/IProcessor";
 import {InteractiveEvent, InteractiveEventType} from "./InteractiveEvent";
-import {ClickHandler} from "src/interact/basic/ClickHandler";
+import {ClickHandler} from "@/interact/basic/ClickHandler";
 
 export abstract class ClickProcessor implements IProcessor {
 

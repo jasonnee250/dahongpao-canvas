@@ -1,9 +1,9 @@
-import {AbsSubMode} from "src/interact/basic/SubMode";
-import {InteractiveEvent, InteractiveEventType} from "src/interact/basic/InteractiveEvent";
-import {EventContext} from "src/plugins";
+import {AbsSubMode} from "@/interact/basic/SubMode";
+import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent";
+import {EventContext} from "@/plugins";
 import {GraphicUtils} from "dahongpao-core";
-import {StreamProcessor} from "src/interact/basic/StreamProcessor";
-import {IProcessor} from "src/interact/basic/IProcessor";
+import {StreamProcessor} from "@/interact/basic/StreamProcessor";
+import {IProcessor} from "@/interact/basic/IProcessor";
 
 export abstract class DownAndMoveStreamMode extends AbsSubMode {
 

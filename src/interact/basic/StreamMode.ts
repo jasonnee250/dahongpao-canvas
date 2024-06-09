@@ -1,8 +1,8 @@
 import {AbsSubMode} from "@/interact/basic/SubMode";
 import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent";
 import {EventContext} from "@/plugins";
-import {StreamProcessor} from "src/interact/basic/StreamProcessor";
-import {IProcessor} from "src/interact/basic/IProcessor";
+import {StreamProcessor} from "@/interact/basic/StreamProcessor";
+import {IProcessor} from "@/interact/basic/IProcessor";
 
 export abstract class StreamMode extends AbsSubMode{
 
