@@ -1,9 +1,14 @@
 import {IProcessor} from "@/interact/basic/IProcessor";
 import {EventContext} from "@/plugins/EventContext";
-import {InteractiveEvent} from "@/interact/basic/InteractiveEvent.ts";
+import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent.ts";
 
 export abstract class StreamProcessor implements IProcessor {
 
+    allowEventTypeSet=new Set([
+        InteractiveEventType.pointerDown,
+        InteractiveEventType.pointermove,
+        InteractiveEventType.pointerup,
+    ])
     process(_event: InteractiveEvent, _eventCtx: EventContext) {
         return;
     }

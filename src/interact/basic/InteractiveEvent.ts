@@ -4,6 +4,7 @@ export enum InteractiveEventType{
     pointerDownOutside="pointerDownOutside",
     pointerDown="pointerdown",
     pointermove="pointermove",
+    pointermoveOutside="pointermoveOutside",
     pointerup="pointerup",
     unknown="unknown",
 }

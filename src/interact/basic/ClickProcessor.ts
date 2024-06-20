@@ -8,6 +8,13 @@ export abstract class ClickProcessor implements IProcessor {
     downHandlers:ClickHandler[]=[];
     upHandlers:ClickHandler[]=[];
 
+    hasWorking:boolean=false;
+
+    allowEventTypeSet=new Set([
+        InteractiveEventType.pointerDown,
+        InteractiveEventType.pointerup,
+    ])
+
     registerDownHandler(handler:ClickHandler):void{
         this.downHandlers.push(handler);
     }
@@ -15,15 +22,29 @@ export abstract class ClickProcessor implements IProcessor {
         this.upHandlers.push(handler);
     }
     process(event: InteractiveEvent, eventCtx: EventContext): void {
+
+        this.downProcess(event,eventCtx);
+        this.upProcess(event,eventCtx);
+    }
+
+    downProcess(event: InteractiveEvent, eventCtx: EventContext): void{
         if(event.type===InteractiveEventType.pointerDown){
             for(const handler of this.downHandlers){
                 if(handler.enable(event, eventCtx)){
+                    this.hasWorking=true;
                     handler.handle(event, eventCtx);
                     return;
                 }
             }
         }
+    }
+
+    upProcess(event: InteractiveEvent, eventCtx: EventContext): void{
         if(event.type===InteractiveEventType.pointerup){
+            if(this.hasWorking){
+                this.hasWorking=false;
+                return;
+            }
             for(const handler of this.upHandlers){
                 if(handler.enable(event, eventCtx)){
                     handler.handle(event, eventCtx);

@@ -17,11 +17,11 @@ export class InteractiveManager {
     /** 当前模式执行之后判断要不要退出该模式 */
     onEvent(event:PointerEvent,ctx:EventContext):void{
         //reset
-        this._reset(ctx);
+        this._reset(event,ctx);
         const interactiveEvent=this._convertInteractiveEvent(event,ctx);
         this.detect(interactiveEvent,ctx);
         this.currentMode.work(interactiveEvent,ctx);
-        this._record(interactiveEvent,ctx);
+        this.afterOnEvent(interactiveEvent,ctx);
     }
 
     detect(event:InteractiveEvent,ctx:EventContext):void{
@@ -38,10 +38,18 @@ export class InteractiveManager {
         }
     }
 
-    private _reset(ctx:EventContext){
+    private _reset(event:PointerEvent,ctx:EventContext){
+        ctx.reset();
         for(const [_type,detector] of ctx.detectors){
             detector.reset();
         }
+        if(event.type!==ctx.lastInteractiveEvent?.type){
+            ctx.lastDiffTypeEvent=ctx.lastInteractiveEvent;
+        }
+    }
+
+    afterOnEvent(event:InteractiveEvent,ctx:EventContext):void{
+        this._record(event, ctx);
     }
 
     private _record(event:InteractiveEvent,ctx:EventContext):void{
@@ -69,6 +77,9 @@ export class InteractiveManager {
             return InteractiveEventType.pointerDown;
         }
         if(type==="pointermove"){
+            if(event.target!=ctx.gmlRender.canvas){
+                return InteractiveEventType.pointermoveOutside;
+            }
             return InteractiveEventType.pointermove;
         }
         if(type==="pointerup"){

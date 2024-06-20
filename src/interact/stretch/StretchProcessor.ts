@@ -23,7 +23,7 @@ export class StretchProcessor extends StreamProcessor {
         return false;
     }
 
-    onDown(event: InteractiveEvent, ctx: EventContext): void {
+    onStart(event: InteractiveEvent, ctx: EventContext): void {
         this.relatedLinks = InteractiveUtils.removeTargetFromIndexTreeAndFindRelatedLines(ctx.nodeManager, this.target!.node);
         this.lastPos = event.globalPoint;
     }

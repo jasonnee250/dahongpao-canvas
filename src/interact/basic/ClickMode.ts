@@ -5,9 +5,8 @@ import {GraphicUtils} from "dahongpao-core";
 import {IProcessor} from "@/interact";
 
 export abstract class ClickMode extends AbsSubMode {
-    private deltaDistance = 2;
-
-    locked:boolean=false;
+    private deltaDistance = 1;
+    locked: boolean = false;
 
     constructor(processors:IProcessor[]) {
         super(processors);
@@ -19,13 +18,28 @@ export abstract class ClickMode extends AbsSubMode {
         if(event.type!==InteractiveEventType.pointerDown){
             return false;
         }
-        return this.clickEnable(event, ctx);
+        const res=this.clickEnable(event, ctx);
+        if(res){
+            this.locked=true;
+        }
+        return res;
     }
-    canBeExit(event: InteractiveEvent, ctx: EventContext): boolean {
-        return !(ctx.lastInteractiveEvent?.type === InteractiveEventType.pointerDown
-            && event.type === InteractiveEventType.pointerup
-            && GraphicUtils.distance(ctx.lastInteractiveEvent?.globalPoint, event.globalPoint) < this.deltaDistance / ctx.gmlRender.getScale());
 
+    work(event: InteractiveEvent, ctx: EventContext) {
+        //pointer up能够退出
+        if(event.type===InteractiveEventType.pointerup){
+            this.locked=false;
+        }
+        //非pointerup事件如果距离小于阈值，不能退出
+        const distance=GraphicUtils.distance(ctx.lastDiffTypeEvent?.globalPoint, event.globalPoint);
+        if(distance>this.deltaDistance/ ctx.gmlRender.getScale()){
+            this.locked=false;
+        }
+        super.work(event, ctx);
+    }
+
+    canBeExit(event: InteractiveEvent, ctx: EventContext): boolean {
+        return !this.locked;
     }
 
 }

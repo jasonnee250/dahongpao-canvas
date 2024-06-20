@@ -146,6 +146,15 @@ export class CanvasRender implements GMLRender {
         this.globalTransform.d = window.devicePixelRatio;
     }
 
+    transformToLocal(point:Point):Point{
+        const {a,b,c, d, e, f} = this.globalTransform;
+        point.x=a*point.x+c*point.y+e;
+        point.y=b*point.x+d*point.y+f;
+        point.x=point.x/window.devicePixelRatio;
+        point.y=point.y/window.devicePixelRatio;
+        return point;
+    }
+
 
     transformToGlobal(point:Point):Point{
         point.x = point.x * window.devicePixelRatio;

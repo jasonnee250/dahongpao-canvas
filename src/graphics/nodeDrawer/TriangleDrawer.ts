@@ -1,9 +1,9 @@
 import {GraphicNode, Point} from "dahongpao-core";
 
 export default function trianglDeraw(node: GraphicNode, ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = '#' + node.color.toString(16);
+    ctx.fillStyle = node.color;
     ctx.globalAlpha = node.alpha;
-    ctx.strokeStyle = '#' + node.borderColor.toString(16);
+    ctx.strokeStyle =  node.borderColor;
     ctx.lineWidth = node.borderWidth;
     ctx.globalAlpha = node.borderAlpha;
     ctx.beginPath();

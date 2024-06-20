@@ -26,7 +26,7 @@ export class CanvasPolyLine extends PolyLine {
         const start = this.points[0];
         const ctx = this.graphicContext;
         ctx.beginPath();
-        ctx.strokeStyle = '#' + this.color.toString(16);
+        ctx.strokeStyle = this.color;
         ctx.globalAlpha = this.alpha;
         ctx.lineWidth = this.width;
         ctx.moveTo(start.x, start.y);

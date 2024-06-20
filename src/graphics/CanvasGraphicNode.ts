@@ -69,8 +69,8 @@ export class CanvasGraphicNode extends GraphicNode {
 
     drawText(ctx: CanvasRenderingContext2D) {
         this.generateBaseText();
-        const textFill = '#' + this.fontColor.toString(16);
-        ctx.fillStyle = textFill === '#0' ? '#000000' : textFill;
+        const textFill = this.fontColor;
+        ctx.fillStyle = textFill;
         ctx.globalAlpha = 1;
         ctx.font = this.fontSize.toString() + 'px Arial';
         this.graphicContext.textAlign = 'left';

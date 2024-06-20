@@ -8,4 +8,7 @@ export interface EventContext {
     gmlRender: GMLRender;
     detectors:Map<DetectorEnum,AbsDetector<any>>;
     lastInteractiveEvent:InteractiveEvent|null;
+    lastDiffTypeEvent:InteractiveEvent|null;
+
+    reset():void;
 }

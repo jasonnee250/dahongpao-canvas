@@ -16,7 +16,9 @@ export abstract class AbsSubMode {
 
     work(event:InteractiveEvent,ctx:EventContext):void{
         for(const processor of this.processors){
-            processor.process(event,ctx);
+            if(processor.allowEventTypeSet.has(event.type)){
+                processor.process(event,ctx);
+            }
         }
     }
 }

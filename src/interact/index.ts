@@ -10,6 +10,7 @@ export * from './basic/MainMode.ts'
 export * from './basic/SubMode.ts'
 export * from './basic/DownAndMoveStreamMode.ts'
 export * from './basic/StreamMode.ts'
+export * from './basic/DbClickMode.ts'
 export * from './basic/ClickMode.ts'
 export * from './basic/ClickHandler.ts'
 

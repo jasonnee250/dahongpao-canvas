@@ -1,7 +1,7 @@
 {
   "name": "dahongpao-canvas",
   "private": false,
-  "version": "0.0.1-fix-19",
+  "version": "0.0.1-fix-34",
   "main": "dist/dahongpao-canvas.umd.cjs",
   "module": "dist/dahongpao-canvas.js",
   "type": "module",
@@ -18,7 +18,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "dahongpao-core": "0.0.2-fix-10",
+    "dahongpao-core": "0.0.2-fix-14",
     "rbush": "^3.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

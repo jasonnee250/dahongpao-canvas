@@ -1,15 +1,14 @@
 import {AbsSubMode} from "@/interact/basic/SubMode";
 import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent";
 import {EventContext} from "@/plugins";
-import {GraphicUtils} from "dahongpao-core";
 import {StreamProcessor} from "@/interact/basic/StreamProcessor";
 import {IProcessor} from "@/interact/basic/IProcessor";
+import {GraphicUtils} from "dahongpao-core";
 
 export abstract class DownAndMoveStreamMode extends AbsSubMode {
 
     streamProcessor:StreamProcessor[];
-
-    private deltaDistance = 2;
+    private deltaDistance = 1;
 
     locked: boolean = false;
 
@@ -21,12 +20,12 @@ export abstract class DownAndMoveStreamMode extends AbsSubMode {
     abstract streamEnable(event: InteractiveEvent, ctx: EventContext): boolean;
 
     canBeEnable(event: InteractiveEvent, ctx: EventContext): boolean {
-        const res = ctx.lastInteractiveEvent?.type === InteractiveEventType.pointerDown
+        const res = ctx.lastDiffTypeEvent?.type === InteractiveEventType.pointerDown
             && event.type === InteractiveEventType.pointermove;
         if (!res) {
             return false;
         }
-        const lastPoint = ctx.lastInteractiveEvent!.globalPoint;
+        const lastPoint = ctx.lastDiffTypeEvent!.globalPoint;
         if (GraphicUtils.distance(lastPoint, event.globalPoint)
             < this.deltaDistance / ctx.gmlRender.getScale()) {
             return false;
@@ -38,7 +37,7 @@ export abstract class DownAndMoveStreamMode extends AbsSubMode {
                 streamProcessor.onStart(event, ctx);
             }
         }
-        return res;
+        return streamRes;
     }
 
     work(event: InteractiveEvent, ctx: EventContext) {
