@@ -6,12 +6,11 @@ import {
     ILineLayout,
     LineLayout,
     PolyLineLayout,
-    TransformMatrix,
     GraphicNode,
     GraphLinkLine,
     IGraphicLine,
     SimpleLine, PolyLine, CurveLine,
-    GMLData, Point, RectNode
+    GMLData, Point, RectNode, AffineMatrix
 } from "dahongpao-core";
 import {CanvasSimpleLine} from "@/graphics/line/CanvasSimpleLine";
 import {CanvasPolyLine} from "@/graphics/line/CanvasPolyLine";
@@ -26,7 +25,7 @@ export class CanvasRender implements GMLRender {
 
     layoutMap: Map<GraphLineType, ILineLayout>;
 
-    globalTransform: TransformMatrix = new TransformMatrix();
+    globalTransform: AffineMatrix = AffineMatrix.generateMatrix();
     canvas:HTMLCanvasElement|null=null;
 
     constructor() {
@@ -41,6 +40,9 @@ export class CanvasRender implements GMLRender {
 
     init(element: HTMLCanvasElement) {
         this.canvas=element;
+        const ctx = this.canvas.getContext("2d")!;
+        const {a, b, c, d, e, f} = this.globalTransform;
+        ctx.transform(a, b, c, d, e, f);
     }
 
     reset() {
@@ -139,9 +141,18 @@ export class CanvasRender implements GMLRender {
     }
 
     resetTransform():void{
-        this.globalTransform=new TransformMatrix();
+        this.globalTransform=AffineMatrix.generateMatrix();
         this.globalTransform.a = window.devicePixelRatio;
         this.globalTransform.d = window.devicePixelRatio;
+    }
+
+    transformToLocal(point:Point):Point{
+        const {a,b,c, d, e, f} = this.globalTransform;
+        point.x=a*point.x+c*point.y+e;
+        point.y=b*point.x+d*point.y+f;
+        point.x=point.x/window.devicePixelRatio;
+        point.y=point.y/window.devicePixelRatio;
+        return point;
     }
 
 
@@ -188,6 +199,10 @@ export class CanvasRender implements GMLRender {
         const rect = this.canvas!.getBoundingClientRect()!;
         const point = new Point(event.clientX - rect.x, event.clientY - rect.y);
         return this.transformToGlobal(point);
+    }
+
+    getScale():number{
+        return this.globalTransform.a;
     }
 
 }

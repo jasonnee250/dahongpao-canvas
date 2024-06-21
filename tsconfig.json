@@ -29,7 +29,7 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "src/App.tsx"
+    "src/index.ts"
   ],
   "exclude": ["node_modules"],
 }

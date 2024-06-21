@@ -18,8 +18,6 @@ export class WheelEventPlugin implements IPlugin{
     onWheel = (event: WheelEvent) => {
         if (event.target === this.eventCtx.gmlRender.canvas) {
             event.preventDefault();
-        } else {
-            return;
         }
         if (event.ctrlKey) {
             //缩放

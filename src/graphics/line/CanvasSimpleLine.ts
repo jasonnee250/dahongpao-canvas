@@ -22,7 +22,7 @@ export class CanvasSimpleLine extends SimpleLine {
     draw() {
         const ctx = this.graphicContext;
         ctx.beginPath();
-        ctx.strokeStyle = '#' + this.color.toString(16);
+        ctx.strokeStyle =  this.color;
         ctx.globalAlpha = this.alpha;
         ctx.lineWidth = this.width;
         ctx.moveTo(this.start.x, this.start.y);

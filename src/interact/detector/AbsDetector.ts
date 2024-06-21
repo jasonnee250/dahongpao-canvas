@@ -1,20 +1,27 @@
 import {EventContext} from "@/plugins/EventContext";
+import {InteractiveEvent} from "@/interact/basic/InteractiveEvent.ts";
 
 export enum DetectorEnum {
     Node,
+    Stretch,
 }
 export abstract class AbsDetector<T> {
 
     result:T|null=null;
-    detect(event: PointerEvent, ctx: EventContext):boolean{
+    detect(event: InteractiveEvent, ctx: EventContext):boolean{
         if(this.result){
             return true;
         }
-        return this.onDetect(event,ctx);
+        return this._onDetect(event,ctx);
     }
     reset():void{
         this.result=null;
     }
 
-    abstract onDetect(event: PointerEvent, ctx: EventContext):boolean;
+    /**
+     * 外部不要直接调用这个方法
+     * @param event
+     * @param ctx
+     */
+    abstract _onDetect(event: InteractiveEvent, ctx: EventContext):boolean;
 }

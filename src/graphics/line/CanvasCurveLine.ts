@@ -26,7 +26,7 @@ export class CanvasCurveLine extends CurveLine {
         let start = this.points[0];
         const ctx = this.graphicContext;
         ctx.beginPath();
-        ctx.strokeStyle = '#' + this.color.toString(16);
+        ctx.strokeStyle = this.color;
         ctx.globalAlpha = this.alpha;
         ctx.lineWidth = this.width;
         for (let i = 1; i < this.points.length - 1; i = i + 2) {

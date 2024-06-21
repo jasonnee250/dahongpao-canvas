@@ -1,6 +1,5 @@
-import {AbsNodeManager, GraphicNode, GraphLinkLine, IGraphicLine, RectNode} from "dahongpao-core";
+import {AbsNodeManager, GMLData, GraphicNode, GraphLinkLine, IGraphicLine, RectNode} from "dahongpao-core";
 import RBush from "rbush";
-import {GMLData} from "dahongpao-core";
 
 export class NodeManager extends AbsNodeManager{
     nodeMap: Map<string, GraphicNode>;
@@ -53,11 +52,26 @@ export class NodeManager extends AbsNodeManager{
         return nodeList;
     }
 
+    addNode(node:GraphicNode){
+        this.nodeMap.set(node.id,node);
+        this.addIndexNode(node.getRectNode());
+    }
+
+    removeNode(node:GraphicNode){
+        this.nodeMap.delete(node.id);
+        this.removeIndexNode(node.getRectNode());
+    }
+
     removeIndexNode(node:RectNode){
         this.tree.remove(node, (a: RectNode, b: RectNode) => {
             return a.id === b.id;
         })
     }
+
+    addIndexNode(node:RectNode):void{
+        this.tree.insert(node);
+    }
+
 
     relatedLinkLine(node: GraphicNode): Set<string> {
         const relatedLinks:Set<string>=new Set<string>();
