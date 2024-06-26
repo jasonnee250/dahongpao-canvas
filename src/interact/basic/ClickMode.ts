@@ -39,7 +39,11 @@ export abstract class ClickMode extends AbsSubMode {
     }
 
     canBeExit(event: InteractiveEvent, ctx: EventContext): boolean {
-        return !this.locked;
+        const res= !this.locked;
+        if(res){
+            this.stop(event, ctx);
+        }
+        return res;
     }
 
 }

@@ -27,6 +27,10 @@ export abstract class ClickProcessor implements IProcessor {
         this.upProcess(event,eventCtx);
     }
 
+    stop(_event: InteractiveEvent, _eventCtx: EventContext):void{
+        this.hasWorking=false;
+    }
+
     downProcess(event: InteractiveEvent, eventCtx: EventContext): void{
         if(event.type===InteractiveEventType.pointerDown){
             for(const handler of this.downHandlers){

@@ -1,7 +1,7 @@
 {
   "name": "dahongpao-canvas",
   "private": false,
-  "version": "0.0.1-fix-34",
+  "version": "0.0.1-fix-37",
   "main": "dist/dahongpao-canvas.umd.cjs",
   "module": "dist/dahongpao-canvas.js",
   "type": "module",

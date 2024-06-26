@@ -1,6 +1,6 @@
 export * from './line/CanvasCurveLine'
 export * from './line/CanvasPolyLine'
-export * from './line/CanvasCurveLine'
+export * from './line/CanvasSimpleLine.ts'
 export * from './CanvasGraphicNode'
 export * from './text/TextInfo.ts'
 export * from './text/BaseText.ts'

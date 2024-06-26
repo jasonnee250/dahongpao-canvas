@@ -57,6 +57,11 @@ export class NodeManager extends AbsNodeManager{
         this.addIndexNode(node.getRectNode());
     }
 
+    addLine(node:IGraphicLine){
+        this.lineMap.set(node.id,node);
+        this.addIndexNode(node.getRectNode());
+    }
+
     removeNode(node:GraphicNode){
         this.nodeMap.delete(node.id);
         this.removeIndexNode(node.getRectNode());

@@ -21,4 +21,12 @@ export abstract class AbsSubMode {
             }
         }
     }
+
+    stop(event:InteractiveEvent,ctx:EventContext){
+        for(const processor of this.processors){
+            if(processor.stop){
+                processor.stop(event, ctx);
+            }
+        }
+    }
 }

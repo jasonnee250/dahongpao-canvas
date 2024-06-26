@@ -52,7 +52,7 @@ export class InteractiveUtils {
         bounds.maxY = Math.round((bounds.maxY) * scale + 2 * buffer) / scale;
     }
 
-    static needDrawByMoving(ctx: EventContext, bounds: RectNode,relatedLinks:Set<string>,targetNode:GraphicNode): IGraphicElement[] {
+    static needDrawByMoving(ctx: EventContext, bounds: RectNode,relatedLinks:Set<string>,targetNode:IGraphicElement): IGraphicElement[] {
         const result = ctx.nodeManager.tree.search(bounds);
         const graphicSet = new Set<IGraphicElement>();
         for (const treeNode of result) {

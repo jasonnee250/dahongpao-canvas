@@ -53,7 +53,11 @@ export abstract class DbClickMode extends AbsSubMode{
 
     canBeExit(event: InteractiveEvent, ctx: EventContext): boolean {
         //db click退出逻辑
-        return !this.locked;
+        const res= !this.locked;
+        if(res){
+            this.stop(event, ctx);
+        }
+        return res;
     }
 
 }

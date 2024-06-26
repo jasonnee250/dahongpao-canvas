@@ -6,4 +6,6 @@ export interface IProcessor{
     allowEventTypeSet:Set<InteractiveEventType>;
 
     process(event:InteractiveEvent,eventCtx:EventContext):void;
+
+    stop?(event: InteractiveEvent, eventCtx: EventContext):void
 }

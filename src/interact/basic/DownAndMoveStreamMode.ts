@@ -55,8 +55,12 @@ export abstract class DownAndMoveStreamMode extends AbsSubMode {
         super.work(event, ctx);
     }
 
-    canBeExit(_event: InteractiveEvent, _ctx: EventContext): boolean {
-        return !this.locked;
+    canBeExit(event: InteractiveEvent, ctx: EventContext): boolean {
+        const res= !this.locked;
+        if(res){
+            this.stop(event, ctx);
+        }
+        return res;
     }
 
 
