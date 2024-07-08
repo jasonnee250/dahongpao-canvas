@@ -130,9 +130,27 @@ export class CanvasRender implements GMLRender {
         }
     }
 
-    scale(sx:number,sy:number):void{
-        this.globalTransform.a*=sx;
-        this.globalTransform.d*=sy;
+    scale(sx:number,sy:number,point?:Point):void{
+        if(!point){
+            this.globalTransform.a*=sx;
+            this.globalTransform.d*=sy;
+            return;
+        }
+        const scaleX=this.globalTransform.a*sx;
+        const scaleY=this.globalTransform.d*sy;
+        const T1=AffineMatrix.generateMatrix()
+            .translate(point.x,point.y);
+        const S1=AffineMatrix.generateMatrix().scale(scaleX,scaleY);
+        const T2=AffineMatrix.generateMatrix()
+            .translate(-point.x,-point.y);
+        const M=T1.crossProduct(S1).crossProduct(T2);
+        const {a,b,c,d,e,f}=M;
+        this.globalTransform.a=a;
+        this.globalTransform.b=b;
+        this.globalTransform.c=c;
+        this.globalTransform.d=d;
+        this.globalTransform.e=e;
+        this.globalTransform.f=f;
     }
 
     translation(dx:number,dy:number):void{
@@ -156,7 +174,8 @@ export class CanvasRender implements GMLRender {
     }
 
 
-    transformToGlobal(point:Point):Point{
+    transformToGlobal(p:Point):Point{
+        const point=new Point(p.x,p.y);
         point.x = point.x * window.devicePixelRatio;
         point.y = point.y * window.devicePixelRatio;
         const {a, d, e, f} = this.globalTransform;

@@ -1,5 +1,6 @@
 import {AbsNodeManager, GMLData, GraphicNode, GraphLinkLine, IGraphicLine, RectNode} from "dahongpao-core";
 import RBush from "rbush";
+import {IGraphicElement} from "dahongpao-core/dist/graphic/IGraphicElement";
 
 export class NodeManager extends AbsNodeManager{
     nodeMap: Map<string, GraphicNode>;
@@ -32,7 +33,7 @@ export class NodeManager extends AbsNodeManager{
         this.addToRTree();
     }
 
-    searchNodes(minX:number,minY:number,maxX:number=minX,maxY:number=minY):GraphicNode[]{
+    searchNodes(minX:number,minY:number,maxX:number=minX,maxY:number=minY):IGraphicElement[]{
         const rect: RectNode = {
             id: "pointer",
             minX,
@@ -41,11 +42,16 @@ export class NodeManager extends AbsNodeManager{
             maxY,
         }
         const res = this.tree.search(rect);
-        const nodeList: GraphicNode[] = [];
+        const nodeList: IGraphicElement[] = [];
         for (const treeNode of res) {
             const node = this.nodeMap.get(treeNode.id);
             if (node) {
                 nodeList.push(node);
+            }else{
+                const line=this.lineMap.get(treeNode.id);
+                if(line){
+                    nodeList.push(line);
+                }
             }
         }
         nodeList.sort((a, b) => a.zIndex - b.zIndex);

@@ -1,4 +1,4 @@
-import {IPlugin, RectNode} from "dahongpao-core";
+import {IPlugin, Point, RectNode} from "dahongpao-core";
 import {EventContext} from "@/plugins/EventContext";
 import {IGraphicElement} from "dahongpao-core/dist/graphic/IGraphicElement";
 
@@ -23,7 +23,9 @@ export class WheelEventPlugin implements IPlugin{
             //缩放
             const delta = Math.abs(event.deltaY) / 100;
             const scale = event.deltaY > 0 ? (1 - delta) : (1 + delta);
-            this.eventCtx.gmlRender.scale(scale, scale);
+            const clientPoint=new Point(event.clientX,event.clientY);
+            const globalPoint=this.eventCtx.gmlRender.transformToGlobal(clientPoint);
+            this.eventCtx.gmlRender.scale(scale, scale,globalPoint);
         } else {
             //平移
             this.eventCtx.gmlRender.translation(-event.deltaX, -event.deltaY);
