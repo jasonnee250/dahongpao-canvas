@@ -38,33 +38,37 @@ export class CanvasGraphicNode extends GraphicNode {
         this.graphicContext = ctx;
     }
 
-    draw(): void {
+    drawOnGLCtx(ctx:CanvasRenderingContext2D):void{
         switch (this.type) {
             case GraphicNodeType.Circle:
-                ellipseDraw(this, this.graphicContext);
+                ellipseDraw(this, ctx);
                 break;
             case GraphicNodeType.Diamond:
-                diamondDraw(this, this.graphicContext);
+                diamondDraw(this, ctx);
                 break;
             case GraphicNodeType.Parallelogram:
-                parallelogramDraw(this, this.graphicContext);
+                parallelogramDraw(this, ctx);
                 break;
             case GraphicNodeType.Trapezoid:
-                trapezoidDraw(this, this.graphicContext);
+                trapezoidDraw(this, ctx);
                 break;
             case GraphicNodeType.Triangle:
-                trianglDeraw(this, this.graphicContext);
+                trianglDeraw(this, ctx);
                 break;
             case GraphicNodeType.Text:
                 break;
             case GraphicNodeType.Rect:
             default:
-                rectDraw(this, this.graphicContext);
+                rectDraw(this, ctx);
         }
         if(this.text===""){
             return;
         }
-        this.drawText(this.graphicContext);
+        this.drawText(ctx);
+    }
+
+    draw(): void {
+        this.drawOnGLCtx(this.graphicContext);
     }
 
     drawText(ctx: CanvasRenderingContext2D) {

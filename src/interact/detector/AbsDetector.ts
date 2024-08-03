@@ -1,5 +1,5 @@
 import {EventContext} from "@/plugins/EventContext";
-import {InteractiveEvent} from "@/interact/basic/InteractiveEvent.ts";
+import {InteractiveEvent} from "@/interact/basic/InteractiveEvent";
 
 export enum DetectorEnum {
     Node,

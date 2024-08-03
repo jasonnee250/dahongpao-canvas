@@ -1,7 +1,7 @@
-import {AbsDetector} from "@/interact/detector/AbsDetector.ts";
+import {AbsDetector} from "@/interact/detector/AbsDetector";
 import {GraphicNode} from "dahongpao-core";
 import {EventContext} from "@/plugins/EventContext";
-import {InteractiveEvent} from "@/interact/basic/InteractiveEvent.ts";
+import {InteractiveEvent} from "@/interact/basic/InteractiveEvent";
 
 export class NodeDetector extends AbsDetector<GraphicNode>{
     // @ts-ignore

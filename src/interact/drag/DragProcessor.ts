@@ -1,9 +1,9 @@
 import {GraphicNode, GraphicUtils, Point, RectNode} from "dahongpao-core";
 import {StreamProcessor} from "@/interact/basic/StreamProcessor";
 import {EventContext} from "@/plugins/EventContext";
-import {DetectorEnum} from "@/interact/detector/AbsDetector.ts";
-import {InteractiveEvent} from "@/interact/basic/InteractiveEvent.ts";
-import {InteractiveUtils} from "@/interact/utils/InteractiveUtils.ts";
+import {DetectorEnum} from "@/interact/detector/AbsDetector";
+import {InteractiveEvent} from "@/interact/basic/InteractiveEvent";
+import {InteractiveUtils} from "@/interact/utils/InteractiveUtils";
 
 export class DragProcessor extends StreamProcessor {
 

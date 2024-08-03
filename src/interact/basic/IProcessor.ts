@@ -1,5 +1,5 @@
 import {EventContext} from "@/plugins/EventContext";
-import {InteractiveEvent, InteractiveEventType} from "./InteractiveEvent.ts";
+import {InteractiveEvent, InteractiveEventType} from "./InteractiveEvent";
 
 export interface IProcessor{
 

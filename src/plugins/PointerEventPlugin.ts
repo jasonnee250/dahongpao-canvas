@@ -1,7 +1,7 @@
 import {IPlugin} from "dahongpao-core";
 import {EventContext} from "@/plugins/EventContext";
 import {InteractiveManager} from "@/interact/InteractiveManager";
-import {IConfig} from "@/interact/config/IConfig.ts";
+import {IConfig} from "@/interact/config/IConfig";
 
 export class PointerEventPlugin implements IPlugin{
 

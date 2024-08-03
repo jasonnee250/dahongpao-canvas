@@ -130,27 +130,18 @@ export class CanvasRender implements GMLRender {
         }
     }
 
-    scale(sx:number,sy:number,point?:Point):void{
-        if(!point){
+    scale(sx:number,sy:number,globalPoint?:Point):void{
+        if(!globalPoint){
             this.globalTransform.a*=sx;
             this.globalTransform.d*=sy;
             return;
         }
-        const scaleX=this.globalTransform.a*sx;
-        const scaleY=this.globalTransform.d*sy;
-        const T1=AffineMatrix.generateMatrix()
-            .translate(point.x,point.y);
-        const S1=AffineMatrix.generateMatrix().scale(scaleX,scaleY);
-        const T2=AffineMatrix.generateMatrix()
-            .translate(-point.x,-point.y);
-        const M=T1.crossProduct(S1).crossProduct(T2);
-        const {a,b,c,d,e,f}=M;
-        this.globalTransform.a=a;
-        this.globalTransform.b=b;
-        this.globalTransform.c=c;
-        this.globalTransform.d=d;
-        this.globalTransform.e=e;
-        this.globalTransform.f=f;
+        const T=AffineMatrix.generateMatrix().translate(-globalPoint.x,-globalPoint.y);
+        const S=AffineMatrix.generateMatrix().scale(sx,sx);
+        const T1=AffineMatrix.generateMatrix().translate(globalPoint.x,globalPoint.y);
+        const M=T1.crossProduct(S).crossProduct(T);
+        this.globalTransform=M.crossProduct(this.globalTransform);
+        return;
     }
 
     translation(dx:number,dy:number):void{
@@ -222,6 +213,15 @@ export class CanvasRender implements GMLRender {
 
     getScale():number{
         return this.globalTransform.a;
+    }
+
+    scaleToCenter(scaleNumber:number):void{
+        const scale=this.getScale();
+        const sx=scaleNumber/scale;
+        const viewBounds=this.getViewPortBounds();
+        const centerPoint=new Point(0.5*(viewBounds.minX+viewBounds.maxX),
+            0.5*(viewBounds.minY+viewBounds.maxY));
+        this.scale(sx,sx,centerPoint);
     }
 
 }

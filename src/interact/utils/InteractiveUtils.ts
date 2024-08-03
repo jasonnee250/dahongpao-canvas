@@ -1,5 +1,5 @@
 import {AbsNodeManager, GraphicNode, Point, RectNode} from "dahongpao-core";
-import {EventContext} from "@/plugins/EventContext.ts";
+import {EventContext} from "@/plugins/EventContext";
 import {IGraphicElement} from "dahongpao-core/dist/graphic/IGraphicElement";
 
 export class InteractiveUtils {

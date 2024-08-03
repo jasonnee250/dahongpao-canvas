@@ -1,6 +1,6 @@
 import {GMLRender, IApplication, IPlugin, RectNode} from "dahongpao-core";
 import {CanvasRender} from "@/render/CanvasRender";
-import {NodeManager} from "@/app/NodeManager.ts";
+import {NodeManager} from "./NodeManager";
 import {IGraphicElement} from "dahongpao-core/dist/graphic/IGraphicElement";
 
 export class Application implements IApplication{

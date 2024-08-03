@@ -1,5 +1,5 @@
 export * from './example/ExampleApp'
-export * from './app/index.ts'
+export * from './app/index'
 export * from './component'
 export * from './graphics'
 export * from './interact'

@@ -1,8 +1,8 @@
 import {EventContext} from "@/plugins/EventContext";
-import {IConfig} from "./config/IConfig.ts";
-import {InteractiveEvent, InteractiveEventType} from "./basic/InteractiveEvent.ts";
+import {IConfig} from "./config/IConfig";
+import {InteractiveEvent, InteractiveEventType} from "./basic/InteractiveEvent";
 import {Point} from "dahongpao-core";
-import {AbsMainMode} from "@/interact/basic/MainMode.ts";
+import {AbsMainMode} from "@/interact/basic/MainMode";
 
 export class InteractiveManager {
 
@@ -17,8 +17,8 @@ export class InteractiveManager {
     /** 当前模式执行之后判断要不要退出该模式 */
     onEvent(event:PointerEvent,ctx:EventContext):void{
         //reset
-        this._reset(event,ctx);
-        const interactiveEvent=this._convertInteractiveEvent(event,ctx);
+        this.reset(event,ctx);
+        const interactiveEvent=this.convertInteractiveEvent(event,ctx);
         this.detect(interactiveEvent,ctx);
         this.currentMode.work(interactiveEvent,ctx);
         this.afterOnEvent(interactiveEvent,ctx);
@@ -38,7 +38,7 @@ export class InteractiveManager {
         }
     }
 
-    private _reset(event:PointerEvent,ctx:EventContext){
+    reset(event:PointerEvent,ctx:EventContext){
         ctx.reset();
         for(const [_type,detector] of ctx.detectors){
             detector.reset();
@@ -56,19 +56,19 @@ export class InteractiveManager {
         ctx.lastInteractiveEvent=event;
     }
 
-    private _convertInteractiveEvent(event:PointerEvent,ctx:EventContext):InteractiveEvent{
+    convertInteractiveEvent(event:PointerEvent,ctx:EventContext):InteractiveEvent{
         const rect = ctx.gmlRender.canvas!.getBoundingClientRect()!;
         const point = new Point(event.clientX - rect.x, event.clientY - rect.y);
         const globalPoint= ctx.gmlRender.transformToGlobal(point);
         return {
             clientPoint:new Point(event.clientX,event.clientY),
             globalPoint:globalPoint,
-            type:this._convertEventType(event,ctx),
+            type:this.convertEventType(event,ctx),
             originEvent:event,
         }
     }
 
-    private _convertEventType(event:PointerEvent,ctx:EventContext):InteractiveEventType{
+    convertEventType(event:PointerEvent,ctx:EventContext):InteractiveEventType{
         const type=event.type;
         if(type==="pointerdown"){
             if(event.target!=ctx.gmlRender.canvas){

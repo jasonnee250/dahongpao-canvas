@@ -3,7 +3,7 @@ import {GraphicNode, GraphicUtils} from "dahongpao-core";
 import {EventContext} from "@/plugins/EventContext";
 import {InteractiveUtils} from "@/interact/utils/InteractiveUtils";
 import {InteractiveEvent} from "@/interact/basic/InteractiveEvent";
-import {StretchHotBuffer} from "@/interact/basic/constants.ts";
+import {StretchHotBuffer} from "@/interact/basic/constants";
 
 export enum StretchType {
     TOP,

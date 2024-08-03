@@ -4,15 +4,15 @@ export * from './basic/InteractiveEvent'
 
 export * from './basic/IProcessor'
 export * from './basic/StreamProcessor'
-export * from './basic/ClickProcessor.ts'
+export * from './basic/ClickProcessor'
 
-export * from './basic/MainMode.ts'
-export * from './basic/SubMode.ts'
-export * from './basic/DownAndMoveStreamMode.ts'
-export * from './basic/StreamMode.ts'
-export * from './basic/DbClickMode.ts'
-export * from './basic/ClickMode.ts'
-export * from './basic/ClickHandler.ts'
+export * from './basic/MainMode'
+export * from './basic/SubMode'
+export * from './basic/DownAndMoveStreamMode'
+export * from './basic/StreamMode'
+export * from './basic/DbClickMode'
+export * from './basic/ClickMode'
+export * from './basic/ClickHandler'
 
 
 export * from './config/IConfig'

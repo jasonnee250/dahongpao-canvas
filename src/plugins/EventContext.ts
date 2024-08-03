@@ -1,6 +1,6 @@
-import {NodeManager} from "@/app/NodeManager.ts";
+import {NodeManager} from "@/app/NodeManager";
 import {GMLRender} from "dahongpao-core";
-import {DetectorEnum, AbsDetector} from "@/interact/detector/AbsDetector.ts";
+import {DetectorEnum, AbsDetector} from "@/interact/detector/AbsDetector";
 import {InteractiveEvent} from "@/interact";
 
 export interface EventContext {

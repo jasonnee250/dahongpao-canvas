@@ -21,10 +21,10 @@ export class WheelEventPlugin implements IPlugin{
         }
         if (event.ctrlKey) {
             //缩放
-            const delta = Math.abs(event.deltaY) / 100;
+            const delta = 2*Math.abs(event.deltaY) / 100;
             const scale = event.deltaY > 0 ? (1 - delta) : (1 + delta);
             const clientPoint=new Point(event.clientX,event.clientY);
-            const globalPoint=this.eventCtx.gmlRender.transformToGlobal(clientPoint);
+            const globalPoint=this.eventCtx.gmlRender.globalTransform.crossPoint(clientPoint);
             this.eventCtx.gmlRender.scale(scale, scale,globalPoint);
         } else {
             //平移

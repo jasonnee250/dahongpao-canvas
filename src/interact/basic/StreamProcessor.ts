@@ -1,6 +1,6 @@
 import {IProcessor} from "@/interact/basic/IProcessor";
 import {EventContext} from "@/plugins/EventContext";
-import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent.ts";
+import {InteractiveEvent, InteractiveEventType} from "@/interact/basic/InteractiveEvent";
 
 export abstract class StreamProcessor implements IProcessor {
 
